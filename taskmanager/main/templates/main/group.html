@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    {% block title %} - Главная страница{% endblock %}
+    {% block menu %}{% endblock %}
+{% endblock %}
+
+
+<!-- Кнопка-триггер модального окна -->
+{% block modalbutton %}{% if request.user.is_staff %}<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-folder-plus"></i> Добавить запись </button>{% endif %}{% endblock %}
+<!-- Кнопка-триггер модального окна -->
+
+
+{% block addnote %}
+<form method="POST">
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">
+        <h2 class="mt-5">Добавить Группу</h2> 
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+    </div>
+    <div class="modal-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      <button class="btn btn-success" type="submit" value="Сохранить">Сохранить</button>
+    </div>
+  </div>
+</form>
+{% endblock %} 
+
+
+{% block content %}
+<!-- MAIN PAGE -->
+    <div class="features">
+        <a class="link-info" href="{% url 'home' %}"> <i class="fas fa-angle-double-right"></i> Главная страница</a>
+        <h1>Список Групп</h1>
+        {% for gr in group_model %}
+        <div class="list-group">
+          <a href="{% url 'showgroup' id=gr.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-3 mt-1">#{{gr.pk}}. {{gr}}</h5>
+              <h5 class="text-muted">#</h5>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

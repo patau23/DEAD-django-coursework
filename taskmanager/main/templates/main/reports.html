@@ -1,0 +1,425 @@
+{% extends 'layout.html' %}
+
+
+{% block head %}
+{% block title %} - Главная страница{% endblock %}
+{% block menu %}
+{% endblock %}
+{% endblock %}
+
+
+
+
+<!-- ЭТО МАЛЕНЬКОЕ НАВИГАЦИОННОЕ МЕНЮ,
+     ЧТОБЫ ОНО БЫЛО ВИДНО НАДО УДАЛИТЬ
+     ШАБЛОНИЗАТОРЫ С ЕГО НАЗВАНИЕМ
+     ИЗ ШАБЛОНА -->
+{% block lilmenu %}{% endblock %}
+
+
+<!-- Таблицы -->
+<!-- STAFF -->
+{% block content %}
+
+<div class="features">
+    <h1>Таблицы</h1>
+    <div class="container">
+        <ul class="navbar nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link" href="#fac" role="tab" data-toggle="tab">Факультеты</a></li>
+            <li class="nav-item"><a class="nav-link" href="#depart" role="tab" data-toggle="tab">Кафедры</a></li>
+            <li class="nav-item"><a class="nav-link" href="#group" role="tab" data-toggle="tab">Группы</a></li>
+            <li class="nav-item"><a class="nav-link" href="#student" role="tab" data-toggle="tab">Студенты</a></li>
+            <li class="nav-item"><a class="nav-link" href="#fellow" role="tab" data-toggle="tab">Стипендиаты</a></li>
+            <li class="nav-item"><a class="nav-link" href="#accrual" role="tab" data-toggle="tab">Начисления</a></li>
+            <li class="nav-item"><a class="nav-link" href="#staff" role="tab" data-toggle="tab">Сотрудники</a></li>
+            <li class="nav-item"><a class="nav-link" href="#fund" role="tab" data-toggle="tab">Фонды</a></li>
+            <li class="nav-item"><a class="nav-link" href="#educ" role="tab" data-toggle="tab">Типы.Обуч.</a></li>
+            <li class="nav-item"><a class="nav-link" href="#scholar" role="tab" data-toggle="tab">Типы.Стип</a></li>
+            <li class="nav-item"><a class="nav-link" href="#bank" role="tab" data-toggle="tab">Банки</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="fac">
+                <!-- FACULTY -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Факультетов</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код факультета</th>
+                                <th scope="col">Наименование факультета</th>
+                                <th scope="col">Декан факультета</th>
+                                {% if request.user.is_staff %}
+                                <th scope="col">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% if faculty_model %}
+                        {% for fac in faculty_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ fac.faculty_code }}</td>
+                                <td>{{ fac.faculty_name }}</td>
+                                <td>{{ fac.deanery_employee_code }}</td>
+                                {% if request.user.is_staff %}
+                                <td>
+                                    <a class="btn btn-warning" href="{% url 'showfaculty' id=fac.pk %}">
+                                        Редактировать</a> |
+                                    <a class="btn btn-danger" href="{% url 'deletefaculty' id=fac.pk %}">Удалить</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="depart">
+                <!-- DEPART -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Кафедр</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код кафедры</th>
+                                <th scope="col">Наименование кафедры</th>
+                                <th scope="col">Код факультета</th>
+                                <th scope="col">Заведующий кафедрой</th>
+                                {% if request.user.is_staff %}
+                                <th scope="col">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% if department_model %}
+                        {% for d in department_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ d.department_code }}</td>
+                                <td>{{ d.department_name }}</td>
+                                <td>{{ d.faculty_code }}</td>
+                                <td>{{ d.department_head_code }}</td>
+                                {% if request.user.is_staff %}
+                                <td>
+                                    <a class="btn btn-warning mb-1" href="{% url 'showdepartment' id=d.pk %}">
+                                        Редактировать</a>
+                                    <a class="btn btn-danger" href="{% url 'deletedepartment' id=d.pk %}">Удалить</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="group">
+                <!-- GROUP -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Групп</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код группы</th>
+                                <th scope="col">Наименование группы</th>
+                                <th scope="col">Код выпускающей кафедры</th>
+                                <th scope="col">Код куратора группы</th>
+                                {% if request.user.is_staff %}
+                                <th scope="col">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% if group_model %}
+                        {% for groupp in group_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ groupp.group_code }}</td>
+                                <td>{{ groupp.group_name }}</td>
+                                <td>{{ groupp.issuing_department_code }}</td>
+                                <td>{{ groupp.сurator_code }}</td>
+                                {% if request.user.is_staff %}
+                                <td>
+                                    <a class="btn btn-warning" href="{% url 'showgroup' id=groupp.pk %}">
+                                        Редактировать</a> |
+                                    <a class="btn btn-danger" href="{% url 'deletegroup' id=groupp.pk %}">Удалить</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="student">
+                <!-- STUDENTS -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Студентов</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код</th>
+                                <th scope="col">Имя студента</th>
+                                <th scope="col">Группа</th>
+                                <th scope="col">Код вида обучения</th>
+                                <th scope="col">Номер лицевого счета</th>
+                                <th scope="col">Код банка</th>
+                                {% if request.user.is_staff %}
+                                <th scope="col">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% if student_model %}
+                        {% for stud in student_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ stud.student_code }}</td>
+                                <td>{{ stud.student_name }}</td>
+                                <td>{{ stud.group_code }}</td>
+                                <td>{{ stud.education_type_code }}</td>
+                                <td>{{ stud.personal_reckoning_number }}</td>
+                                <td>{{ stud.bank_code }}</td>
+                                {% if request.user.is_staff %}
+                                <td>
+                                    <a class="btn btn-warning" href="{% url 'showstudent' id=stud.pk %}">
+                                        Редактировать</a> |
+                                    <a class="btn btn-danger" href="{% url 'deletestudent' id=stud.pk %}">Удалить</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="fellow">
+                <!-- FELLOWS -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Стипендиатов</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Имя студента</th>
+                                <th scope="col">Вид стипендии</th>
+                                <th scope="col">Начало периода начисления</th>
+                                <th scope="col">Конец периода начисления</th>
+                                {% if request.user.is_staff %}
+                                <th scope="col">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% if fellow_model %}
+                        {% for fell in fellow_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ fell.student_code }}</td>
+                                <td>{{ fell.scholarship_type_code }}</td>
+                                <td>{{ fell.beginning_of_the_accrual_period }}</td>
+                                <td>{{ fell.ending_of_the_accrual_period }}</td>
+                                {% if request.user.is_staff %}
+                                <td>
+                                    <a class="btn btn-warning" href="{% url 'showfellow' id=fell.pk %}">
+                                        Редактировать</a> |
+                                    <a class="btn btn-danger" href="{% url 'deletefellow' id=fell.pk %}">Удалить</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="accrual">
+                <!-- ACCRUAL -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Начислений</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код студента</th>
+                                <th scope="col">Дата начисления стипендии</th>
+                                <th scope="col">Сумма начисления</th>
+                                {% if request.user.is_staff %}
+                                <th scope="col">Действия</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        {% if accrual_model %}
+                        {% for acc in accrual_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ acc.student_code }}</td>
+                                <td>{{ acc.date_of_scholarship_accrual }}</td>
+                                <td>{{ acc.amount_of_money }}</td>
+                                {% if request.user.is_staff %}
+                                <td>
+                                    <a class="btn btn-warning" href="{% url 'showaccrual' id=acc.pk %}">
+                                        Редактировать</a> |
+                                    <a class="btn btn-danger" href="{% url 'deleteaccrual' id=acc.pk %}">Удалить</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="staff">
+
+                <table class="table table-hover table-condensed">
+                    <h2>Список Сотрудников</h2>
+                    <thead>
+                        <tr>
+                            <th scope="col">Код</th>
+                            <th scope="col">Имя</th>
+                            {% if request.user.is_staff %}
+                            <th scope="col">Действия</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    {% if staff_model %}
+                    {% for staff in staff_model %}
+                    <tbody>
+                        <tr>
+                            <td>{{ staff.сurator_code }}</td>
+                            <td>{{ staff }}</td>
+                            {% if request.user.is_staff %}
+                            <td>
+                                <a class="btn btn-warning" href="{% url 'editstaff' id=staff.pk %}"> Редактировать</a> |
+                                <a class="btn btn-danger" href="{% url 'deletestaff' id=staff.pk %}">Удалить</a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                    {% else %}
+                    <p>No polls are available.</p>
+                    {% endif %}
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="fund">
+                <!-- SCHOLARSHIP_FUND -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Сумм начислений на факультет</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код факультета</th>
+                                <th scope="col">Сумма стипендий </th>
+                            </tr>
+                        </thead>
+                        {% if scholar_fund_model %}
+                        {% for fund in scholar_fund_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ fund.faculty_code }}</td>
+                                <td>{{ fund.scholarship_amount }}</td>
+                                <td><a class="btn btn-warning" href="{% url 'showfund' id=fund.pk %}"> Сохранить</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="educ">
+                <!-- Types_of_Education -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Видов обучения</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код</th>
+                                <th scope="col">Название</th>
+                            </tr>
+                        </thead>
+                        {% if educ_type_model %}
+                        {% for type in educ_type_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ type.education_type_code }}</td>
+                                <td>{{ type.education_type_name }}</td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="scholar">
+                <!-- Types_of_Scholarship -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Видов стипендии</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код вида стипендии</th>
+                                <th scope="col">Код вида стипендии</th>
+                                <th scope="col">Сумма выплачиваемой стипендии, ₸</th>
+                            </tr>
+                        </thead>
+                        {% if scholar_type_model %}
+                        {% for type in scholar_type_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ type.scholarship_type_code }}</td>
+                                <td>{{ type.scholarship_type_name }}</td>
+                                <td>{{ type.amount_of_money }}</td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="bank">
+                <!-- BANK -->
+                <div class="features">
+                    <table class="table table-hover table-condensed">
+                        <h2>Список Банков</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Код банка</th>
+                                <th scope="col">Наименование банка</th>
+                            </tr>
+                        </thead>
+                        {% if bank_model %}
+                        {% for bank in bank_model %}
+                        <tbody>
+                            <tr>
+                                <td>{{ bank.bank_code }}</td>
+                                <td>{{ bank.bank_name }}</td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                        {% else %}
+                        <p>No polls are available.</p>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

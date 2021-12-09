@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    {% block title %} - Главная страница{% endblock %}
+    {% block menu %}{% endblock %}
+{% endblock %}
+
+
+{% block content %}
+<!-- MAIN PAGE -->
+<div class="features">
+    <a class="link-info" href="{% url 'accrual' %}"><i class="fas fa-angle-double-right"></i> Начисления</a>
+    <h1>{{ post.faculty_name }}</h1>
+    <div class="list-group">
+        <h3 class="mb-1">Информация о Стипендиате</h2>
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="mb-2 mt-3">Имя студента: {{ post.student_code }}</h3>
+            <small> ... </small>
+        </div>
+        <h5>Дата начисления: {{ post.date_of_scholarship_accrual }}</h5>
+        <h5>Сумма начисления: {{ post.amount_of_money }}</h5>
+    </div>
+    <br>
+    {% if request.user.is_staff %}
+    <h3 class="mb-2 mt-3">Редактирование объекта</h3>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>
+            {{ form.as_p }}
+        </p>
+        <button class="btn btn-warning" type="submit" value="Сохранить">Сохранить</button>
+    </form>
+    <a href="{% url 'deleteaccrual' id=post.pk %}" class="btn btn-danger" type="submit">Удалить</a>
+    {% endif %}
+</div>
+
+{% endblock %}

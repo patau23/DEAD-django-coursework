@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    {% block title %} - Главная страница{% endblock %}
+    {% block menu %}{% endblock %}
+{% endblock %}
+
+
+<!-- Кнопка-триггер модального окна -->
+{% block modalbutton %}{% if request.user.is_staff %}<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-folder-plus"></i> Добавить запись </button>{% endif %}{% endblock %}
+<!-- Кнопка-триггер модального окна -->
+
+
+{% block addnote %}
+<form method="POST">
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">
+        <h2 class="mt-5">Добавить Начисление</h2> 
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+    </div>
+    <div class="modal-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      <button class="btn btn-success" type="submit" value="Сохранить">Сохранить</button>
+    </div>
+  </div>
+</form>
+{% endblock %} 
+
+
+{% block content %}
+<!-- MAIN PAGE -->
+    <div class="features">
+        <a class="link-info" href="{% url 'home' %}"><i class="fas fa-angle-double-right"></i> Главная страница</a>
+        <h1>Список Начислений</h1>
+        {% for acc in accrual_model %}
+        <div class="list-group">
+          <a href="{% url 'showaccrual' id=acc.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-3 mt-1">Начисление: #{{acc.pk}}</h5>
+              <small class="text-muted">{{ acc.date_of_scholarship_accrual }}#</small>
+            </div>
+            <p>На имя: {{acc.student_code}}</p>
+          </a>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

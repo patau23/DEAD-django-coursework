@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    {% block title %} - страница редактирования{% endblock %}
+    {% block menu %}{% endblock %}
+{% endblock %}
+
+
+{% block content %}
+<!-- MAIN PAGE -->
+    <div class="features">
+        <h1>Страница редактирования</h1>
+        <br>
+        {% if request.user.is_staff %}
+        <form method="POST" action="">
+            {% csrf_token %}
+            <p>
+              <label for="">Введите Имя</label>
+              <input type="text" name="name" value="{{ staff }}">
+            </p>
+            <button class="btn btn-success" type="submit" value="Сохранить">Сохранить</button>
+        </form>
+        {% else %}
+        <p>Вам не доступен данный функционал</p>
+        {% endif %}
+    </div>
+{% endblock %}

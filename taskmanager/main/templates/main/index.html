@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    {% block title %} - Главная страница{% endblock %}
+    {% block menu %}{% endblock %}
+{% endblock %}
+
+
+{% block content %}
+<!-- MAIN PAGE -->
+    <div class="jumbotron ">
+      <div class='container'>
+        <h1 class="display-4">Подсистема "Стипендия"</h1>
+        <p class="lead">Курсовой проект. Амирханов Акежан ИС-19-3</p>
+        <hr class="my-4">
+        <p >Система для учета и вывода в списков информации о студентах, о стипендиатах и стипендиях, начисляемых им,<br>
+          а также информация о факультетах, кафедрах, группах<br> Система предназначена для бухгалтера и секретаря деканата.
+        </p>
+        {% if request.user.is_authenticated %}
+        <div class="w-100">
+          <div class="card" style="width: 18rem;display:inline-block;">
+            <div class="card-body">
+              <h4 class="card-title">Факультеты</h4>
+              <p class="card-text">Отделение ВУЗа, где преподаются научные дисциплины какой-н. одной отрасли знаний.</p>
+              <a class="btn btn-primary btn-lg" href="{% url 'faculty' %}" role="button">Перейти</a>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem; display:inline-block;">
+            <div class="card-body">
+              <h4 class="card-title">Кафедры</h4>
+              <p class="card-text">Подразделение факультета. Подготавливает студентов в рамках одной программы.</p>
+              <a class="btn btn-primary btn-lg" href="{% url 'department' %}" role="button">Перейти</a>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem; display:inline-block;">
+            <div class="card-body">
+              <h4 class="card-title">Группы</h4>
+              <p class="card-text">Совокупность учащихся, объединенных для обучения на одной общей программе.</p>
+              <a class="btn btn-primary btn-lg" href="{% url 'group' %}" role="button">Перейти</a>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem; display:inline-block;">
+            <div class="card-body">
+              <h4 class="card-title">Студенты</h4>
+              <p class="card-text">Учащийся данного учебного учреждения. Каждый имеет свой уникальный номер.</p>
+              <a class="btn btn-primary btn-lg" href="{% url 'student' %}" role="button">Перейти</a>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem; display:inline-block;">
+            <div class="card-body">
+              <h4 class="card-title">Стипендиаты</h4>
+              <p class="card-text">Список студентов-грантников имеющих определенные стипендии.</p>
+              <a class="btn btn-warning btn-lg" href="{% url 'fellow' %}" role="button">Перейти</a>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem; display:inline-block;">
+            <div class="card-body">
+              <h4 class="card-title">Начисления</h4>
+              <p class="card-text">Документ-отчет подачи в бухгалтерию, для дальнейшего перевода стипендии.</p>
+              <a class="btn btn-warning btn-lg" href="{% url 'accrual' %}" role="button">Перейти</a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+{% endblock %}
